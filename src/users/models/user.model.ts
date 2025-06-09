@@ -1,6 +1,7 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
 import { UserRole } from "../../common/enums/user.enum";
 import { ApiProperty } from "@nestjs/swagger";
+import { Customer } from "../../customers/models/customer.model";
 
 interface IUserCreationAttr {
   first_name: string;
@@ -74,20 +75,20 @@ export class User extends Model<User, IUserCreationAttr> {
   declare hashed_password: string;
 
   @ApiProperty({
-    type: "string",
+    type: "boolean",
     description: "Foydanaluvchining faolligi",
     example: false,
   })
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
   declare is_active: boolean;
 
   @ApiProperty({
-    type: "string",
+    type: "boolean",
     description: "Foydanaluvchining ikki bosqichlik tekshiruvining xolati",
     example: false,
     required: false,
   })
-  @Column({ type: DataType.STRING, defaultValue: false })
+  @Column({ type: DataType.BOOLEAN, defaultValue: false })
   declare two_factor_enabled: boolean;
 
   @ApiProperty({
@@ -95,6 +96,9 @@ export class User extends Model<User, IUserCreationAttr> {
     description: "Foydanaluvchining ro‘li",
     example: "customer",
   })
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.ENUM(...Object.values(UserRole)), allowNull: false })
   declare role: UserRole;
+
+  @HasOne(() => Customer)
+  customer: Customer;
 }

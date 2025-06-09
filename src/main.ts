@@ -7,7 +7,7 @@ import * as cookieParser from "cookie-parser";
 async function start() {
   const PORT = Number(process.env.PORT) || 3333;
   const app = await NestFactory.create(AppModule, {
-    logger: ["debug", "error", "warn"],
+    logger: ["error"],
   });
 
   app.useGlobalPipes(
@@ -50,7 +50,7 @@ async function start() {
         scheme: "bearer",
         bearerFormat: "JWT",
         name: "Authorization",
-        description: 'JWT tokenni kiriting (misol uchun, "Bearer <token>")',
+        description: `JWT tokenni kiriting ("Bearer token")`,
         in: "header",
       },
       "JWT-auth"

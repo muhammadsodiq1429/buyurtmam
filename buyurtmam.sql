@@ -345,7 +345,9 @@ ALTER TABLE "payments"
 ADD CONSTRAINT "payments_method_id_foreign" FOREIGN KEY ("method_id") REFERENCES "payment_methods" ("id");
 
 ALTER TABLE "delivery_ratings"
-ADD CONSTRAINT "delivery_ratings_order_id_foreign" FOREIGN KEY ("order_id") REFERENCES "orders" ("id");CREATE TABLE "categories" (
+ADD CONSTRAINT "delivery_ratings_order_id_foreign" FOREIGN KEY ("order_id") REFERENCES "orders" ("id");
+
+CREATE TABLE "categories" (
     "id" BIGINT NOT NULL,
     "restaurant_id" BIGINT NOT NULL,
     "name" VARCHAR(255) NOT NULL,

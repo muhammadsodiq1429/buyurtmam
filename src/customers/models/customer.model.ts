@@ -1,4 +1,5 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -19,7 +20,7 @@ interface ICustomerCreationAttr {
 @Table
 export class Customer extends Model<Customer, ICustomerCreationAttr> {
   @ApiProperty({
-    description: "Customerning takrorlanmas Id'si, User table'siga bog‘langan.",
+    description: "Customerning takrorlanmas ID'si, User table'siga bog‘langan.",
     example: 1,
     type: "number",
   })
@@ -50,6 +51,7 @@ export class Customer extends Model<Customer, ICustomerCreationAttr> {
   @ApiProperty({
     description: "Customerning tug‘ilgan sanasi",
     type: "string",
+    example: "2008-02-10",
   })
   @Column({ type: DataType.DATEONLY })
   declare date_of_birth?: Date;
@@ -57,7 +59,11 @@ export class Customer extends Model<Customer, ICustomerCreationAttr> {
   @ApiProperty({
     description: "Customerning jinsi",
     type: "string",
+    example: CustomerGender.MALE,
   })
   @Column({ type: DataType.ENUM(...Object.values(CustomerGender)) })
   declare gender?: CustomerGender;
+
+  @BelongsTo(() => User)
+  declare user: User;
 }

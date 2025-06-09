@@ -69,7 +69,7 @@ export class CreateUserDto {
   confirm_password: string;
 
   @ApiProperty({
-    type: "string",
+    type: "boolean",
     description: "Foydanaluvchining faolligi",
     example: false,
   })
@@ -78,7 +78,7 @@ export class CreateUserDto {
   is_active: boolean;
 
   @ApiProperty({
-    type: "string",
+    type: "boolean",
     description: "Foydanaluvchining ikki bosqichlik tekshiruvining xolati",
     example: false,
     required: false,

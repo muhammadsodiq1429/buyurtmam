@@ -1,5 +1,4 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript"; 
-           
-           
-           
-     @Table export class Dish {}
+import { Column, DataType, Model, Table } from "sequelize-typescript";
+
+@Table
+export class Dish {}

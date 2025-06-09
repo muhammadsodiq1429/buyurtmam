@@ -9,19 +9,24 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
 import { User } from "./models/user.model";
 import * as bcrypt from "bcrypt";
-import { Transaction, WhereOptions } from "sequelize";
+import { FindOptions, Transaction, WhereOptions } from "sequelize";
+import { UpdatePasswordDto } from "./dto/update-password.dto";
+import { Admin } from "../admins/models/admin.model";
+import { Customer } from "../customers/models/customer.model";
+import { Courier } from "../couriers/models/courier.model";
+import { RestaurantAdmin } from "../restaurant-admins/models/restaurant-admin.model";
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User) private readonly userModel: typeof User) {}
   async create(
     createUserDto: CreateUserDto,
-    transaction: Transaction
+    transaction?: Transaction
   ): Promise<User> {
     const { email, password, phone, confirm_password } = createUserDto;
-    if (await this.findByAny({ email }))
+    if (await this.findByAny({ where: { email } }))
       throw new ConflictException(`User with email '${email}' already exists`);
-    if (await this.findByAny({ phone }))
+    if (await this.findByAny({ where: { phone } }))
       throw new ConflictException(`User with phone '${phone}' already exists`);
     if (password !== confirm_password)
       throw new BadRequestException(
@@ -37,8 +42,8 @@ export class UsersService {
     );
   }
 
-  findByAny(any: WhereOptions<User>): Promise<User | null> {
-    return this.userModel.findOne({ where: any });
+  findByAny(any: FindOptions<User>): Promise<User | null> {
+    return this.userModel.findOne(any);
   }
 
   async findAll(): Promise<User[]> {
@@ -55,21 +60,52 @@ export class UsersService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+    transaction?: Transaction
+  ): Promise<User> {
     const user = await this.findOne(id);
     const { email, phone } = updateUserDto;
-    if (user.email !== email && (await this.findByAny({ email })))
+    if (
+      email &&
+      user.email !== email &&
+      (await this.findByAny({ where: { email } }))
+    )
       throw new ConflictException(`User with email '${email}' already exists`);
-    if (user.phone !== phone && (await this.findByAny({ phone })))
+    if (
+      phone &&
+      user.phone !== phone &&
+      (await this.findByAny({ where: { phone } }))
+    )
       throw new ConflictException(`User with phone '${phone}' already exists`);
 
-    return user.update(updateUserDto);
+    await user.update(updateUserDto, { transaction });
+
+    return user;
   }
 
-  async remove(id: number): Promise<Number> {
+  async updatePassword(
+    user: User /* | Admin | Courier | RestaurantAdmin */,
+    updatePasswordDto: UpdatePasswordDto
+  ): Promise<User> {
+    const { current_password, new_password, confirm_password } =
+      updatePasswordDto;
+    if (!(await bcrypt.compare(current_password, user.hashed_password)))
+      throw new BadRequestException("Incorrect current password");
+
+    if (new_password !== confirm_password)
+      throw new BadRequestException(
+        "New password and confirm password do not match"
+      );
+
+    return user.update({ hashed_password: await bcrypt.hash(new_password, 7) });
+  }
+
+  async remove(id: number): Promise<User> {
     const user = await this.findOne(id);
     await user.destroy();
 
-    return id;
+    return user;
   }
 }

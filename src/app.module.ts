@@ -23,6 +23,12 @@ import { PaymentMethodsModule } from "./payment-methods/payment-methods.module";
 import { SettingsModule } from "./settings/settings.module";
 import { UsersModule } from "./users/users.module";
 import { User } from "./users/models/user.model";
+import { Customer } from "./customers/models/customer.model";
+import { Courier } from "./couriers/models/courier.model";
+import { Role } from "./roles/models/role.model";
+import { RestaurantAdmin } from "./restaurant-admins/models/restaurant-admin.model";
+import { Admin } from "./admins/models/admin.model";
+import { Restaurant } from "./restaurants/models/restaurant.model";
 
 @Module({
   imports: [
@@ -36,7 +42,15 @@ import { User } from "./users/models/user.model";
       database: process.env.PG_DB,
       autoLoadModels: true,
       logging: false,
-      models: [User],
+      models: [
+        Admin,
+        Courier,
+        Role,
+        Customer,
+        RestaurantAdmin,
+        User,
+        Restaurant,
+      ],
       sync: { alter: true },
     }),
     AdminsModule,

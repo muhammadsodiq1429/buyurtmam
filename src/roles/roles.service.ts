@@ -30,14 +30,14 @@ export class RolesService {
   }
 
   async findAll() {
-    const allRoles = await this.roleModel.findAll();
+    const allRoles = await this.roleModel.findAll({ include: { all: true } });
     if (allRoles.length === 0) throw new NotFoundException(`Roles not found`);
 
     return { success: true, allRoles };
   }
 
   async findOne(id: number) {
-    const role = await this.roleModel.findByPk(id);
+    const role = await this.roleModel.findByPk(id, { include: { all: true } });
     if (!role) throw new NotFoundException(`Role not found with ID ${id}`);
 
     return { success: true, role };

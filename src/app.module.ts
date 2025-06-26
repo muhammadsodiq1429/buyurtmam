@@ -29,6 +29,9 @@ import { Role } from "./roles/models/role.model";
 import { RestaurantAdmin } from "./restaurant-admins/models/restaurant-admin.model";
 import { Admin } from "./admins/models/admin.model";
 import { Restaurant } from "./restaurants/models/restaurant.model";
+import { Address } from "./addresses/models/address.model";
+import { PaymentMethod } from "./payment-methods/models/payment-method.model";
+import { Setting } from "./settings/models/setting.model";
 
 @Module({
   imports: [
@@ -50,6 +53,9 @@ import { Restaurant } from "./restaurants/models/restaurant.model";
         RestaurantAdmin,
         User,
         Restaurant,
+        Address,
+        PaymentMethod,
+        Setting,
       ],
       sync: { alter: true },
     }),

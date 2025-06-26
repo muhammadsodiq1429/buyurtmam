@@ -109,12 +109,11 @@ ALTER TABLE "addresses" ADD PRIMARY KEY ("id");
 CREATE TABLE "payment_methods" (
     "id" BIGINT NOT NULL,
     "name" VARCHAR(255) NOT NULL,
+    "is_active" BOOLEAN NULL DEFAULT '1',
+    "description" TEXT NOT NULL,
     "type" VARCHAR(255) CHECK (
         "type" IN ('offline', 'online', 'NFC')
     ) NOT NULL,
-    "is_active" BOOLEAN NULL DEFAULT '1',
-    "logo_url" VARCHAR(255) NOT NULL,
-    "description" TEXT NOT NULL
 );
 
 ALTER TABLE "payment_methods" ADD PRIMARY KEY ("id");
@@ -428,9 +427,6 @@ ALTER TABLE "customers" ADD PRIMARY KEY ("user_id");
 CREATE TABLE "settings" (
     "id" BIGINT NOT NULL,
     "customer_id" BIGINT NOT NULL,
-    "ui_theme_mode" VARCHAR(255) CHECK (
-        "ui_theme_mode" IN ('dark', 'light', 'auto')
-    ) NULL DEFAULT 'auto',
     "notifications_enabled" BOOLEAN NULL DEFAULT '1',
     "sms_notifications" BOOLEAN NULL DEFAULT '1',
     "email_notifications" BOOLEAN NULL DEFAULT '1',
@@ -439,7 +435,10 @@ CREATE TABLE "settings" (
     "order_notifications" BOOLEAN NULL DEFAULT '1',
     "default_payment_method_id" BIGINT NOT NULL,
     "default_address_id" BIGINT NULL,
-    "delivery_instructions" TEXT NULL
+    "delivery_instructions" TEXT NULL,
+    "ui_theme_mode" VARCHAR(255) CHECK (
+        "ui_theme_mode" IN ('dark', 'light', 'auto')
+    ) NULL DEFAULT 'auto',
 );
 
 ALTER TABLE "settings" ADD PRIMARY KEY ("id");

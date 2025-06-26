@@ -10,5 +10,6 @@ import { MailModule } from "../mail/mail.module";
   imports: [SequelizeModule.forFeature([Customer]), UsersModule, MailModule],
   controllers: [CustomersController],
   providers: [CustomersService],
+  exports: [CustomersService],
 })
 export class CustomersModule {}

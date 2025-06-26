@@ -1,6 +1,7 @@
 import { flatten } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { RestaurantAdmin } from "../../restaurant-admins/models/restaurant-admin.model";
 
 interface IRestaurantCreationAttr {
   name: string;
@@ -70,4 +71,7 @@ export class Restaurant extends Model<Restaurant, IRestaurantCreationAttr> {
   })
   @Column({ type: DataType.BOOLEAN, defaultValue: true })
   declare is_active: boolean;
+
+  @HasMany(() => RestaurantAdmin)
+  declare restaurant_admin: RestaurantAdmin[];
 }

@@ -3,12 +3,16 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
+  HasOne,
   Model,
   Table,
 } from "sequelize-typescript";
 import { CustomerGender } from "../../common/enums/customer.enum";
 import { User } from "../../users/models/user.model";
 import { ApiProperty } from "@nestjs/swagger";
+import { Setting } from "../../settings/models/setting.model";
+import { Address } from "../../addresses/models/address.model";
 
 interface ICustomerCreationAttr {
   user_id: number;
@@ -66,4 +70,10 @@ export class Customer extends Model<Customer, ICustomerCreationAttr> {
 
   @BelongsTo(() => User)
   declare user: User;
+
+  @HasOne(() => Setting)
+  declare setting: Setting;
+
+  @HasMany(() => Address)
+  declare addresses: Address[];
 }

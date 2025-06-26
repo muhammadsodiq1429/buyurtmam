@@ -1,5 +1,13 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import {
+  BelongsTo,
+  Column,
+  DataType,
+  HasMany,
+  Model,
+  Table,
+} from "sequelize-typescript";
+import { Admin } from "../../admins/models/admin.model";
 
 interface IRoleCreationAttr {
   name: string;
@@ -25,4 +33,7 @@ export class Role extends Model<Role, IRoleCreationAttr> {
   })
   @Column({ type: DataType.STRING })
   declare description?: string;
+
+  @HasMany(() => Admin)
+  declare admins: Admin[];
 }

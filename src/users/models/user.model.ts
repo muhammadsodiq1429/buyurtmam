@@ -98,7 +98,4 @@ export class User extends Model<User, IUserCreationAttr> {
   })
   @Column({ type: DataType.ENUM(...Object.values(UserRole)), allowNull: false })
   declare role: UserRole;
-
-  @HasOne(() => Customer)
-  customer: Customer;
 }

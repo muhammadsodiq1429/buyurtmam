@@ -36,7 +36,6 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "handlebars": "^4.7.8",
-    "nestjs-telegraf": "^2.9.1",
     "otp-generator": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"

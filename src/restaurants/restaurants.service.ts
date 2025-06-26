@@ -42,7 +42,9 @@ export class RestaurantsService {
   }
 
   async findAll() {
-    const restaurants = await this.restaurantModel.findAll();
+    const restaurants = await this.restaurantModel.findAll({
+      include: { all: true },
+    });
     if (restaurants.length === 0)
       throw new NotFoundException("Restaurants not found");
 
@@ -53,7 +55,9 @@ export class RestaurantsService {
   }
 
   async findOne(id: number) {
-    const restaurant = await this.restaurantModel.findByPk(id);
+    const restaurant = await this.restaurantModel.findByPk(id, {
+      include: { all: true },
+    });
     if (!restaurant) {
       throw new NotFoundException(`Restaurant not found with ID ${id}`);
     }
